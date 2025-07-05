@@ -9,3 +9,6 @@ def login(request):
 
 def signup(request):
     return render(request, 'signup.html', {})
+
+def odts(request):
+    return render(request, 'odts.html', {})
