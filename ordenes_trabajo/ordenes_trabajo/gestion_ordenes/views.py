@@ -1,8 +1,12 @@
 from django.shortcuts import render
+from datetime import datetime
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html', {})
+    contexto = {
+    'year': datetime.now().year,
+    }
+    return render(request, 'index.html', contexto)
 
 def login(request):
     return render(request, 'login.html', {})

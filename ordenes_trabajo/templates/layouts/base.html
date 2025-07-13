@@ -1,34 +1,104 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            position: relative;
+            color: white;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{% static 'img/bg.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            filter: blur(8px);
+            /* Solo el fondo tiene blur */
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.8);
+            z-index: -1;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <ul class="d-flex justify-content-between align-items-center w-100 m-4">
-            <a href="{% url 'index' %}" class="text-center">
-                <img class="img-fluid w-50" src="{% static 'images/GOSLogo.png' %}" alt="logo" class="d-inline-block align-top">
-            </a>
-            <div class="d-flex gap-5">
-                <a href="login" class="btn btn-warning">Iniciar sesión</a>
-                <a href="signup" class="btn btn-secondary">Registrarse</a>
+    <div class="container-fluid px-3 py-3 sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom rounded-3">
+            <div class="container-fluid px-4">
+                <!-- Logo y Brand -->
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}"
+                    style="text-decoration: none;">
+                    <div class="logo-container me-3">
+                        <img src="{% static 'img/logo.png' %}" alt="Go Services Logo" width="50" height="50"
+                            class="rounded-circle">
+                    </div>
+                </a>
+
+                <!-- Botón hamburguesa para móviles -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menú colapsable -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="d-flex gap-3 btn-group-mobile">
+                            <a href="{% url 'login' %}" class="btn btn-login text-white px-4 py-2 rounded-pill">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
+                            </a>
+                            <a href="{% url 'signup' %}" class="btn btn-signup px-4 py-2 rounded-pill">
+                                <i class="fas fa-user-plus me-2"></i>Registrarse
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-        </ul>
-    </nav>
+        </nav>
+    </div>
+
     <main>
         {% block content %} {% endblock %}
     </main>
-    <footer class="bg-primary text-light mt-5 footer">
+    <footer class="bg-primary text-light mt-auto footer w-75 mx-auto rounded rounded-2">
         <div class="text-center p-4">
-            © 2023 GOS ODT. Todos los derechos reservados.
+            ©{{ year }} GO Services. Todos los derechos reservados.
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

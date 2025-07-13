@@ -1,0 +1,88 @@
+:root {
+    --primary-dark: #121212;
+    --primary-blue: #1976D2;
+    --primary-yellow: #FBC02D;
+    --shadow-light: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-custom {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, #1e1e1e 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.logo-container {
+    transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+    transform: scale(1.05);
+}
+
+.brand-text {
+    background: linear-gradient(45deg, #ffffff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-login {
+    background: linear-gradient(45deg, var(--primary-blue), #1565C0);
+    border: none;
+    box-shadow: 0 2px 10px rgba(25, 118, 210, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background: linear-gradient(45deg, #1565C0, #0D47A1);
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+}
+
+.btn-signup {
+    background: linear-gradient(45deg, var(--primary-yellow), #F9A825);
+    border: none;
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(251, 192, 45, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-signup:hover {
+    background: linear-gradient(45deg, #F9A825, #F57F17);
+    box-shadow: 0 4px 15px rgba(251, 192, 45, 0.4);
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .btn-group-mobile {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        width: 100%;
+        align-items: center;
+    }
+
+    .btn-login,
+    .btn-signup {
+        width: 100%;
+    }
+}
