@@ -19,9 +19,14 @@ from django.urls import path
 from ordenes_trabajo.gestion_ordenes  import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
     path('odts/', views.odts, name='odts'),
-    path('', views.index, name='index'),
+    path('odts/crear/', views.crear_odt, name='crear_odt'),
+    path('odts/<int:odt_id>/', views.detalle_odt, name='detalle_odt'),
+    path('odts/<int:odt_id>/editar/', views.editar_odt, name='editar_odt'),
+    path('odts/<int:odt_id>/eliminar/', views.eliminar_odt, name='eliminar_odt'),
+    path('odts/<int:odt_id>/estado/', views.actualizar_estado_odt, name='actualizar_estado_odt'),
 ]

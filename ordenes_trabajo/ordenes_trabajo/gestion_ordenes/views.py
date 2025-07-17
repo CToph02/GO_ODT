@@ -56,3 +56,53 @@ def odts(request):
         ]
     }
     return render(request, 'odt.html', context)
+
+def crear_odt(request):
+    return render(request, 'crear_odt.html', {})
+
+def detalle_odt(request, odt_id):
+    context = {
+        'odt': {
+            'id': odt_id,
+            'typeMachine': 'Impresora',
+            'clientName': 'Christopher Muñoz',
+            'brand': 'HP',
+            'model': 'LaserJet Pro M404dn',
+            'celNum': '1234567890',
+            'description': 'Descripción de la orden de trabajo 1',
+            'status': 'Pendiente',
+            'created_at': '2023-10-01',
+            'assigned_to': 'Usuario 1'
+        }
+    }
+    return render(request, 'detalle_odt.html', context)
+
+def editar_odt(request, odt_id):
+    context = {
+        'odt': {
+            'id': odt_id,
+            'typeMachine': 'Impresora',
+            'clientName': 'Christopher Muñoz',
+            'brand': 'HP',
+            'model': 'LaserJet Pro M404dn',
+            'celNum': '1234567890',
+            'description': 'Descripción de la orden de trabajo 1',
+            'status': 'Pendiente',
+            'created_at': '2023-10-01',
+            'assigned_to': 'Usuario 1'
+        }
+    }
+    return render(request, 'editar_odt.html', context)
+
+def eliminar_odt(request, odt_id):
+    context = {
+        'odt_id': odt_id
+    }
+    return render(request, 'eliminar_odt.html', context)
+
+def actualizar_estado_odt(request, odt_id):
+    context = {
+        'odt_id': odt_id,
+        'new_status': 'Completada'  # Example status update
+    }
+    return render(request, 'actualizar_estado_odt.html', context)
