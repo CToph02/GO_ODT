@@ -52,7 +52,79 @@ def odts(request):
                 'status': 'Completada',
                 'created_at': '2023-10-03',
                 'assigned_to': 'Usuario 3'
-            }
+            },
+            {
+                'id': 4,
+                'typeMachine': 'Escáner',
+                'brand': 'Epson',
+                'model': 'Perfection V600',
+                'clientName': 'María López',
+                'celNum': '5566778899',
+                'description': 'Descripción de la orden de trabajo 4',
+                'status': 'Pendiente',
+                'created_at': '2023-10-04',
+                'assigned_to': 'Usuario 4'
+            },
+            {
+                'id': 5,
+                'typeMachine': 'Fotocopiadora',
+                'brand': 'Xerox',
+                'model': 'WorkCentre 6515',
+                'clientName': 'Carlos Fernández',
+                'celNum': '2233445566',
+                'description': 'Descripción de la orden de trabajo 5',
+                'status': 'En Proceso',
+                'created_at': '2023-10-05',
+                'assigned_to': 'Usuario 5'
+            },
+            {
+                'id': 6,
+                'typeMachine': 'Impresora',
+                'brand': 'Lexmark',
+                'model': 'MB2236adw',
+                'clientName': 'Sofía Martínez',
+                'celNum': '3344556677',
+                'description': 'Descripción de la orden de trabajo 6',
+                'status': 'Completada',
+                'created_at': '2023-10-06',
+                'assigned_to': 'Usuario 6'
+            },
+            {
+                'id': 7,
+                'typeMachine': 'Plotter',
+                'brand': 'HP',
+                'model': 'DesignJet T120',
+                'clientName': 'Javier Torres',
+                'celNum': '4455667788',
+                'description': 'Descripción de la orden de trabajo 7',
+                'status': 'Pendiente',
+                'created_at': '2023-10-07',
+                'assigned_to': 'Usuario 7'
+            },
+            {
+                'id': 8,
+                'typeMachine': 'Escáner',
+                'brand': 'Canon',
+                'model': 'CanoScan LiDE 400',
+                'clientName': 'Laura Ramírez',
+                'celNum': '5566778899',
+                'description': 'Descripción de la orden de trabajo 8',
+                'status': 'En Proceso',
+                'created_at': '2023-10-08',
+                'assigned_to': 'Usuario 8'
+            },
+            {
+                'id': 9,
+                'typeMachine': 'Escáner',
+                'brand': 'Canon',
+                'model': 'CanoScan LiDE 400',
+                'clientName': 'Laura Ramírez',
+                'celNum': '5566778899',
+                'description': 'Descripción de la orden de trabajo 8',
+                'status': 'En Proceso',
+                'created_at': '2023-10-08',
+                'assigned_to': 'Usuario 8'
+            },
         ]
     }
     return render(request, 'odt.html', context)
@@ -106,3 +178,10 @@ def actualizar_estado_odt(request, odt_id):
         'new_status': 'Completada'  # Example status update
     }
     return render(request, 'actualizar_estado_odt.html', context)
+
+def estado(request):
+    context = {
+        'odt_id': "odt_id",
+        'status': 'Pendiente'  # Example status
+    }
+    return render(request, 'estado.html', context)

@@ -1,0 +1,258 @@
+{% extends './layouts/base.html' %}
+{% block title %}Estado{% endblock %}
+{% block content %}
+<div class="container-fluid min-vh-100 py-5">
+    <!-- Hero Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-4 fw-bold text-white mb-3">Bienvenido a GO Services</h1>
+            <h3 class="h4 text-white mb-4">Sabemos de impresoras.</h3>
+            <p class="lead mb-4">Aquí puedes encontrar información sobre impresoras y seguir el proceso de reparación.</p>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h2 class="h3 fw-bold text-white">Proceso de Reparación</h2>
+                <p class="text-white">Seguimiento completo del estado de tu impresora</p>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline">
+                    <!-- Paso 1: Diagnosticada -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-success">
+                            <i class="fas fa-search text-white"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <h5 class="fw-bold text-success">Diagnosticada</h5>
+                                <p class="text-muted mb-0">Se ha identificado el problema y se ha evaluado la impresora.</p>
+                                <small class="text-success"><i class="fas fa-check-circle me-1"></i>Completado</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: En Revisión -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-info">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <h5 class="fw-bold text-info">En Revisión</h5>
+                                <p class="text-muted mb-0">Nuestros técnicos están revisando los componentes en detalle.</p>
+                                <small class="text-info"><i class="fas fa-clock me-1"></i>En proceso</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: En Reparación -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-warning">
+                            <i class="fas fa-tools text-white"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <h5 class="fw-bold text-warning">En Reparación</h5>
+                                <p class="text-muted mb-0">Se están realizando las reparaciones necesarias.</p>
+                                <small class="text-muted"><i class="fas fa-hourglass-half me-1"></i>Pendiente</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Reparada -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-light border">
+                            <i class="fas fa-check text-muted"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <h5 class="fw-bold text-muted">Reparada</h5>
+                                <p class="text-muted mb-0">La impresora ha sido reparada y probada exitosamente.</p>
+                                <small class="text-muted"><i class="fas fa-hourglass-half me-1"></i>Pendiente</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 5: Sin Reparación (Alternativo) -->
+                    <div class="timeline-item timeline-alternative">
+                        <div class="timeline-marker bg-light border">
+                            <i class="fas fa-times text-muted"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <h5 class="fw-bold text-muted">Sin Reparación</h5>
+                                <p class="text-muted mb-0">La reparación no es viable económica o técnicamente.</p>
+                                <small class="text-muted"><i class="fas fa-info-circle me-1"></i>Alternativo</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info adicional -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-8">
+            <div class="card bg-light border-0">
+                <div class="card-body text-center py-4">
+                    <h5 class="fw-bold mb-3">¿Necesitas ayuda?</h5>
+                    <p class="text-muted mb-3">Si tienes preguntas sobre el estado de tu reparación, no dudes en contactarnos.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="tel:+56912345678" class="btn btn-outline-primary">
+                            <i class="fas fa-phone me-2"></i>Llamar
+                        </a>
+                        <a href="mailto:info@goservices.cl" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline-container {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #28a745 0%, #17a2b8 25%, #ffc107 50%, #6c757d 75%, #6c757d 100%);
+    border-radius: 3px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 50px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    top: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+.timeline-content {
+    position: relative;
+}
+
+.timeline-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.timeline-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.timeline-alternative {
+    opacity: 0.7;
+}
+
+.timeline-alternative .timeline-card {
+    border-left: 4px solid #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .timeline {
+        padding-left: 20px;
+    }
+    
+    .timeline::before {
+        left: 15px;
+    }
+    
+    .timeline-marker {
+        left: -25px;
+        width: 30px;
+        height: 30px;
+    }
+    
+    .timeline-item {
+        padding-left: 35px;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-card {
+        padding: 15px;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.timeline-item {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item:nth-child(5) { animation-delay: 0.5s; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Añadir interactividad si se necesita
+    const timelineItems = document.querySelectorAll('.timeline-card');
+    
+    timelineItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.borderLeft = '4px solid var(--bs-primary)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            if (!this.closest('.timeline-alternative')) {
+                this.style.borderLeft = '';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

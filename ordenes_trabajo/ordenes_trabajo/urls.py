@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('estado/', views.estado, name='estado'),
     path('odts/', views.odts, name='odts'),
     path('odts/crear/', views.crear_odt, name='crear_odt'),
     path('odts/<int:odt_id>/', views.detalle_odt, name='detalle_odt'),
