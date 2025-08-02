@@ -1,7 +1,4 @@
 from django.db import models
-#from django.contrib.auth.models import User
-
-# Create your models here.
 class Cliente(models.Model):
     clienteId = models.AutoField(primary_key=True)
     clienteNombre = models.CharField(max_length=100)
@@ -40,8 +37,13 @@ class EstadoOrden(models.Model):
         db_table = 'estado_orden'
 
 class OrdenTrabajo(models.Model):
-    # Datos ODT
     odtId = models.AutoField(primary_key=True)
+    # Datos Cliente
+    odtClientName = models.CharField(max_length=100, null=True)
+    odtClientPhone = models.CharField(max_length=15, null=True)
+    odtClientEmail = models.EmailField(blank=True, null=True)
+    odtClientAddress = models.CharField(max_length=255, blank=True, null=True)
+    # Datos ODT
     odtNumero = models.CharField(max_length=20, unique=True)
     odtFecha = models.DateTimeField(auto_now_add=True, null=True)
     odtDescripcion = models.TextField(null=True)
@@ -49,27 +51,21 @@ class OrdenTrabajo(models.Model):
     odtModelo = models.CharField(max_length=50, null=True)
     odtMarca = models.CharField(max_length=50, null=True)
     odtFalla = models.TextField(blank=True, null=True)
-    odtTipoMaquina = models.CharField(max_length=50, choices=[
-        ('impresora', 'Impresora'),
-        ('plotter', 'Plotter'),
-        ('otro', 'Otro'),
-    ], default='impresora')
-
-    # cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    # creadoPor = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    # asignadoA = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='ordenes_asignadas')
-    # estadoOrden = models.ForeignKey(EstadoOrden, on_delete=models.CASCADE, blank=True, null=True)
+    odtTipoMaquina = models.CharField(max_length=50, null=True)
+    # Datos pago
+    odtDiagnostico = models.TextField(blank=True, null=True)
+    odtPaymentForm = models.CharField(max_length=20, null=True)
     
     def __str__(self):
-        return f"ODT {self.odtNumero}"# - {self.cliente.clienteNombre}"
+        return f"ODT {self.odtNumero}"
     
     class Meta:
         verbose_name = 'Orden de Trabajo'
         verbose_name_plural = 'Órdenes de Trabajo'
-        ordering = ['-odtFecha']  # Más recientes primero
+        ordering = ['-odtFecha']
         db_table = 'orden_trabajo'
 
-class Pago(models.Model):  # Cambié el nombre a PascalCase
+class Pago(models.Model):
     pagoId = models.AutoField(primary_key=True)
     pagoFecha = models.DateTimeField(auto_now_add=True)
     pagoMonto = models.DecimalField(max_digits=10, decimal_places=2)

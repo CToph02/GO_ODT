@@ -56,39 +56,235 @@
 
 <body>
     <div class="container-fluid px-3 py-3 sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom rounded-3">
-            <div class="container-fluid px-4">
-                <!-- Logo y Brand -->
-                <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}"
-                    style="text-decoration: none;">
-                    <div class="logo-container me-3">
-                        <img src="{% static 'img/logo.png' %}" alt="Go Services Logo" width="50" height="50"
-                            class="rounded-circle">
-                    </div>
-                </a>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom rounded-3">
+        <div class="container-fluid px-4">
+            <!-- Logo y Brand -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}"
+                style="text-decoration: none;">
+                <div class="logo-container me-3">
+                    <img src="{% static 'img/logo.png' %}" alt="Go Services Logo" width="50" height="50"
+                        class="rounded-circle">
+                </div>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto d-flex align-items-center">
+                    
+                    {% if user.is_authenticated %}
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="user-welcome d-flex align-items-center text-white me-3">
+                            <div class="user-avatar me-2">
+                                <i class="fas fa-user-circle fa-2x"></i>
+                            </div>
+                            <div class="user-info d-none d-md-block">
+                                <div class="user-greeting">
+                                    <span class="fw-bold">Hola, {{ user.get_full_name|default:user.username }}!</span>
+                                </div>
+                                <div class="user-role">
+                                    <small class="opacity-75">
+                                        {% if user.is_superuser %}
+                                            <i class="fas fa-crown me-1"></i>Administrador
+                                        {% elif user.is_staff %}
+                                            <i class="fas fa-cog me-1"></i>Staff
+                                        {% else %}
+                                            <i class="fas fa-user me-1"></i>Usuario
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Botón hamburguesa para móviles -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Menú colapsable -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="ms-auto d-flex align-items-center">
-                        <div class="d-flex gap-3 btn-group-mobile">
-                            <a href="{% url 'login' %}" class="btn btn-login text-white px-4 py-2 rounded-pill">
-                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
-                            </a>
-                            <a href="{% url 'register' %}" class="btn btn-signup px-4 py-2 rounded-pill">
-                                <i class="fas fa-user-plus me-2"></i>Registrarse
-                            </a>
+                        <div class="dropdown">
+                            <button class="btn btn-user-menu dropdown-toggle px-3 py-2 rounded-2" 
+                                    type="button" 
+                                    id="userDropdown" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>
+                                <span class="d-none d-lg-inline">Mi Cuenta</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        <i class="fas fa-user-circle me-2"></i>
+                                        {{ user.username }}
+                                    </h6>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'odts' %}">
+                                        <i class="fas fa-clipboard-list me-2"></i>Mis ODTs
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
+                    
+                    {% else %}
+                    <div class="d-flex gap-3 btn-group-mobile">
+                        <a href="{% url 'login' %}" class="btn btn-login text-white px-4 py-2 rounded-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
+                        </a>
+                        <a href="{% url 'register' %}" class="btn btn-signup px-4 py-2 rounded-3">
+                            <i class="fas fa-user-plus me-2"></i>Registrarse
+                        </a>
+                    </div>
+                    {% endif %}
+                    
                 </div>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
+</div>
+
+<style>
+.user-welcome {
+    border-radius: 10px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar i {
+    color: #ffd700; /* Color dorado para el avatar */
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+}
+
+.user-greeting {
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.btn-user-menu {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-user-menu:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Dropdown personalizado */
+.dropdown-menu {
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    min-width: 250px;
+    padding: 10px 0;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border-radius: 0;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    margin: 0 10px;
+    border-radius: 8px;
+}
+
+.dropdown-item.text-danger:hover {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+.dropdown-header {
+    color: #495057;
+    font-weight: 600;
+    padding: 10px 20px 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .user-info {
+        display: none !important;
+    }
+    
+    .user-welcome {
+        padding: 5px 10px;
+    }
+    
+    .dropdown-menu {
+        min-width: 200px;
+    }
+    
+    .btn-group-mobile {
+        flex-direction: column;
+        gap: 10px !important;
+    }
+    
+    .btn-group-mobile .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-welcome {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Estados especiales para diferentes tipos de usuario */
+.user-role .fa-crown {
+    color: #ffd700;
+}
+
+.user-role .fa-cog {
+    color: #28a745;
+}
+
+.user-role .fa-user {
+    color: #17a2b8;
+}
+</style>
 
     <main>
         {% block content %} {% endblock %}

@@ -9,6 +9,17 @@
       <h1 class="h3 mb-0 text-black">Órdenes de Trabajo</h1>
       <p class="text-muted">Gestiona todas las órdenes de trabajo del sistema</p>
     </div>
+    <form action="{% url 'buscar_odt' %}" method="post">
+      {% csrf_token %}
+      <div class="d-flex gap-2">
+        <input type="text" name="search" id="search" class="form-control"
+          placeholder="Buscar ODT por número o cliente">
+        <button type="submit" class="btn btn-primary btn-search px-2 align-self-stretch">
+          <i class="fas fa-search me-2"></i>Buscar
+        </button>
+      </div>
+    </form>
+
     <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaOdtModal">
       <i class="fas fa-plus me-2"></i>Nueva ODT
     </a>
@@ -22,17 +33,20 @@
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3 bg-secondary rounded-3 p-2">
               <h5 class="card-title text-white mb-0">{{ odt.odtTipoMaquina }}</h5>
-              <p class="text-white mb-0 small">{{ odt.odtFecha }}</p>
+              <p class="text-white mb-0 small">{{ odt.odtNumero }}</p>
             </div>
             <div class="mb-3">
               <p class="mb-1"><strong>Marca:</strong> {{ odt.odtMarca }}</p>
               <p class="mb-1"><strong>Modelo:</strong> {{ odt.odtModelo }}</p>
             </div>
             <div class="mb-3">
-              <p class="mb-1"><strong>Cliente:</strong> {{ odt.clientName }}</p>
-              <p class="mb-1"><strong>Teléfono:</strong> {{ odt.celNum }}</p>
+              <p class="mb-1"><strong>Cliente:</strong> {{ odt.odtClientName }}</p>
+              <p class="mb-1"><strong>Teléfono:</strong> {{ odt.odtClientPhone }}</p>
+              <p class="mb-1"><strong>Dirección:</strong> {{ odt.odtClientEmail }}</p>
+              <p class="mb-1"><strong>Falla:</strong> {{ odt.odtFalla }}</p>
             </div>
             <div class="mb-3">
+              <p class="mb-1"><strong>Fecha:</strong> {{ odt.odtFecha }}</p>
               <span class="badge bg-primary p-2 rounded-3">{{ odt.odtEstado }}</span>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -40,7 +54,7 @@
                 data-bs-target="#odtModal" data-objeto-id="{{ odt.odtId }}">
                 Revisar
               </button>
-              <a href="#" class="btn btn-danger">Eliminar</a>
+              <a href="{% url 'eliminar_odt' odt.odtId %}" class="btn btn-danger">Eliminar {{ odt.odtId }}</a>
             </div>
           </div>
         </div>
@@ -54,9 +68,6 @@
           <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
           <h4>No hay órdenes de trabajo</h4>
           <p class="text-muted">Aún no se han creado órdenes de trabajo en el sistema.</p>
-          <a href="{% url 'crear_odt' %}" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Crear primera ODT
-          </a>
         </div>
       </div>
     </div>
@@ -73,18 +84,18 @@
         </h4>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="{url 'crear_orden'}" method="post" id="nuevaOdtForm">
+      <form action="{% url 'crear_odt' %}" method="post" id="nuevaOdtForm">
         <div class="modal-body">
           {% csrf_token %}
 
           <!-- Información del Cliente -->
           <div class="card mb-4">
             <div class="card-header">
-              <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Información del Cliente</h5>
+              <h5 class="mb-0"><i class="fa-solid fa-circle-user"></i>Información del Cliente</h5>
             </div>
           </div>
 
-          <div class="card-body bg-light rounded-3 p-4 shadow">
+          <div class="card-body bg-light rounded-3 p-4 shadow mb-4">
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-2">
@@ -97,7 +108,7 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="clientNumber" class="form-label text-black">Número: </label>
-                  <input type="tel" class="form-control" id="clientName" name="client_number"
+                  <input type="tel" class="form-control" id="clientNumber" name="client_number"
                     placeholder="Ingrese número del cliente" required>
                 </div>
               </div>
@@ -113,7 +124,7 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="clientAdress" class="form-label text-black">Dirección: </label>
-                  <input type="text" class="form-control" id="clientAdress" name="client_adress"
+                  <input type="text" class="form-control" id="clientAdress" name="client_address"
                     placeholder="Ingrese Dirección del cliente" required>
                 </div>
               </div>
@@ -135,8 +146,8 @@
                   <label for="typeMachine" class="form-label text-black">Tipo de Máquina: </label>
                   <select class="form-select" id="typeMachine" name="type_machine" required>
                     <option value="" disabled selected>Seleccione tipo de máquina</option>
-                    <option value="impresora">Impresora</option>
-                    <option value="computadora">Plotter</option>
+                    <option value="Impresora">Impresora</option>
+                    <option value="Plotter">Plotter</option>
                   </select>
                 </div>
               </div>
@@ -144,8 +155,13 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="brand" class="form-label text-black">Marca: </label>
-                  <input type="text" class="form-control" id="brand" name="brand"
-                    placeholder="Ingrese marca de la impresora" required>
+                  <select class="form-select" id="brand" name="brand" required>
+                    <option value="" disabled selected>Seleccione Marca</option>
+                    <option value="Epson">Epson</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Canon">Canon</option>
+                    <option value="HP">HP</option>
+                  </select>
                 </div>
 
               </div>
@@ -174,6 +190,36 @@
             </div>
           </div>
         </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Información Pago</h5>
+          </div>
+        </div>
+
+        <div class="card-body bg-light rounded-3 p-4 shadow">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-2">
+                <label for="diagnosticpay" class="form-label text-black">Diagnóstico: </label>
+                <input type="text" class="form-control" id="diagnosticpay" name="diagnostic_pay"
+                  placeholder="Ingrese costo del diagnóstico" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-2">
+                <label for="odtPaymentForm" class="form-label text-black">Forma de pago: </label>
+                <select class="form-select" id="odtPaymentForm" name="odtPaymentForm" required>
+                  <option value="" disabled selected>Seleccione forma de pago</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Débito">Débito</option>
+                  <option value="Crédito">Crédito</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="fas fa-times me-2"></i>Cancelar

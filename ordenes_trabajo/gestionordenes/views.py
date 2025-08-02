@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 #from django.http import HttpResponse
 from datetime import datetime
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.forms import AuthenticationForm
 from .models import OrdenTrabajo#, Cliente, EstadoOrden
 
 def index(request):
@@ -10,30 +12,62 @@ def index(request):
     }
     return render(request, 'index.html', contexto)
 
-def login(request):
+def log_in(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+
+    print(f"Username: {username}, Password: {password}")
+    user = authenticate(username=username, password=password)
+    print(f"User authenticated: {user}")
+    if user is not None:
+        login(request, user)
+        return redirect('odts')
     return render(request, 'login.html', {})
 
 def register(request):
     return render(request, 'register.html', {})
+
+def log_out(request):
+    logout(request)
+    return redirect('index')
 
 @login_required
 def odts(request):
     orden = OrdenTrabajo.objects.all()
     return render(request, 'odt.html', {'orden': orden})
 
-def crear_orden(request):
-    orden = OrdenTrabajo(
-        odtTipoMaquina='Impresora',
-        odtMarca='HP',
-        odtModelo='LaserJet Pro M404dn',
-        odtDescripcion='Descripción de la orden de trabajo 1',
-        odtEstado='Pendiente',
-        odtFecha='2023-10-01',
-        odtNumero='ODT-003',
-        odtFalla='Falla de la impresora',
-    )
-    orden.save()
-    return render(request, 'crear_odt.html', {})
+def crear_odt(request):
+    if request.method == 'POST':
+        # Datos Cliente
+        clientName = request.POST.get('client_name')
+        clientPhone = request.POST.get('client_number')
+        clientEmail = request.POST.get('client_email')
+        clientAddress = request.POST.get('client_address')
+        # Datos ODT
+        odtNumero = request.POST.get('serial_number')
+        marca = request.POST.get('brand')
+        modelo = request.POST.get('model')
+        tipo_maquina = request.POST.get('type_machine')
+        marca = request.POST.get('brand')
+        modelo = request.POST.get('model')
+        falla = request.POST.get('fault')
+
+        orden = OrdenTrabajo(
+            odtClientName=clientName,
+            odtClientPhone=clientPhone,
+            odtClientEmail=clientEmail,
+            odtClientAddress=clientAddress,
+            odtNumero=odtNumero,
+            odtFecha=datetime.now(),
+            odtDescripcion='',
+            odtEstado='Pendiente',
+            odtModelo=modelo,
+            odtMarca=marca,
+            odtFalla=falla,
+            odtTipoMaquina=tipo_maquina
+        )
+        orden.save()
+    return redirect('odts')
 
 def detalle_odt(request, odt_id):
     orden = OrdenTrabajo.objects.get(odtId=odt_id)
@@ -44,10 +78,25 @@ def editar_odt(request, odt_id):
     return render(request, 'editar_odt.html', {'orden': orden})
 
 def eliminar_odt(request, odt_id):
-    context = {
-        'odt_id': odt_id
-    }
-    return render(request, 'eliminar_odt.html', context)
+    orden = OrdenTrabajo.objects.get(odtId=odt_id)
+    orden.delete()
+    return redirect('odts')
+
+def buscar_odt(request):
+    if request.method == 'POST':
+        query = request.POST.get('search')
+        if query:
+            orden = OrdenTrabajo.objects.filter(odtNumero__icontains=query)
+        else:
+            orden = OrdenTrabajo.objects.all()
+        print("Hola")
+    return render(request, 'odt.html', {'orden': orden})
+    # query = request.GET.get('query')
+    # if query:
+    #     ordenes = OrdenTrabajo.objects.filter(odtNumero__icontains=query)
+    # else:
+    #     ordenes = OrdenTrabajo.objects.all()
+    # return render(request, 'odt.html', {'orden': ordenes})
 
 def actualizar_estado_odt(request, odt_id):
     context = {
