@@ -15,27 +15,6 @@ class Cliente(models.Model):
         ordering = ['clienteNombre']
         db_table = 'cliente'
 
-class EstadoOrden(models.Model):
-    estadoId = models.AutoField(primary_key=True)
-    estadoNombre = models.CharField(max_length=50)
-    estadoDescripcion = models.TextField(blank=True, null=True)
-    estadoColor = models.CharField(max_length=7, choices=[
-        ('#FF0000', 'Sin reparación'),
-        ('#00FF00', 'Lista'),
-        ('#0000FF', 'Diagnosticada'),
-        ('#FFA500', 'No repara'),
-        ('#FFFF00', 'En reparación'),
-    ], default='#FFFFFF')
-    
-    def __str__(self):
-        return self.estadoNombre
-    
-    class Meta:
-        verbose_name = 'Estado de Orden'
-        verbose_name_plural = 'Estados de Órdenes'
-        ordering = ['estadoNombre']
-        db_table = 'estado_orden'
-
 class OrdenTrabajo(models.Model):
     odtId = models.AutoField(primary_key=True)
     # Datos Cliente
@@ -44,14 +23,15 @@ class OrdenTrabajo(models.Model):
     odtClientEmail = models.EmailField(blank=True, null=True)
     odtClientAddress = models.CharField(max_length=255, blank=True, null=True)
     # Datos ODT
-    odtNumero = models.CharField(max_length=20, unique=True)
-    odtFecha = models.DateTimeField(auto_now_add=True, null=True)
-    odtDescripcion = models.TextField(null=True)
+    odtNumero = models.CharField(max_length=20, unique=True, blank=True)
+    odtFecha = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    #odtDescripcion = models.TextField(null=True)
     odtEstado = models.CharField(max_length=20, default='Pendiente', null=True)
     odtModelo = models.CharField(max_length=50, null=True)
     odtMarca = models.CharField(max_length=50, null=True)
     odtFalla = models.TextField(blank=True, null=True)
     odtTipoMaquina = models.CharField(max_length=50, null=True)
+    odtRecepcion = models.CharField(max_length=50, null=True, blank=True)
     # Datos pago
     odtDiagnostico = models.TextField(blank=True, null=True)
     odtPaymentForm = models.CharField(max_length=20, null=True)
@@ -65,28 +45,18 @@ class OrdenTrabajo(models.Model):
         ordering = ['-odtFecha']
         db_table = 'orden_trabajo'
 
-class Pago(models.Model):
-    pagoId = models.AutoField(primary_key=True)
-    pagoFecha = models.DateTimeField(auto_now_add=True)
-    pagoMonto = models.DecimalField(max_digits=10, decimal_places=2)
-    pagoMetodo = models.CharField(max_length=20, choices=[
-        ('efectivo', 'Efectivo'),
-        ('debito', 'Tarjeta de débito'),
-        ('credito', 'Tarjeta de crédito'),
-        ('transferencia', 'Transferencia'),
-    ])
-    ordenTrabajo = models.ForeignKey(OrdenTrabajo, on_delete=models.CASCADE, related_name='pagos')
-    
-    def __str__(self):
-        return f"Pago ${self.pagoMonto} - ODT {self.ordenTrabajo.odtNumero}"
-    
-    class Meta:
-        verbose_name = 'Pago'
-        verbose_name_plural = 'Pagos'
-        ordering = ['-pagoFecha']
-        db_table = 'pago'
+    def save(self, *args, **kwargs):
+        if not self.odtNumero:
+            ultimo = OrdenTrabajo.objects.order_by('-odtId').first()
+            if ultimo and ultimo.odtNumero.startswith('ODT-'):
+                ultimo_num = int(ultimo.odtNumero.split('-')[1])
+                nuevo_num = ultimo_num + 1
+            else:
+                nuevo_num = 1
+            self.odtNumero = f'ODT-{nuevo_num:06d}'
+        super().save(*args, **kwargs)
 
-class Tecnico(models.Model):
+class Tecnicos(models.Model):
     tecnicoId = models.AutoField(primary_key=True)
     tecnicoNombre = models.CharField(max_length=100)
     tecnicoTelefono = models.CharField(max_length=15)

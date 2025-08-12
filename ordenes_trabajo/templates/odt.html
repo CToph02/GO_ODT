@@ -47,14 +47,16 @@
             </div>
             <div class="mb-3">
               <p class="mb-1"><strong>Fecha:</strong> {{ odt.odtFecha }}</p>
-              <span class="badge bg-primary p-2 rounded-3">{{ odt.odtEstado }}</span>
+              <p class="mb-1"><strong>Recepcionado en:</strong> {{ odt.odtRecepcion }}</p>
+              <!-- <span class="badge bg-primary p-2 rounded-3">{{ odt.odtEstado }}</span> -->
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button type="button" class="btn btn-primary me-md-2 btn-modal" data-bs-toggle="modal"
-                data-bs-target="#odtModal" data-objeto-id="{{ odt.odtId }}">
-                Revisar
-              </button>
-              <a href="{% url 'eliminar_odt' odt.odtId %}" class="btn btn-danger">Eliminar {{ odt.odtId }}</a>
+              <a href="{% url 'imprimir_odt' odt.odtId %}" class="btn btn-primary">
+                Imprimir
+              </a>
+              <a href="{% url 'eliminar_odt' odt.odtId %}" class="btn btn-danger">
+                Eliminar {{ odt.odtId }}
+              </a>
             </div>
           </div>
         </div>
@@ -126,6 +128,17 @@
                   <label for="clientAdress" class="form-label text-black">Dirección: </label>
                   <input type="text" class="form-control" id="clientAdress" name="client_address"
                     placeholder="Ingrese Dirección del cliente" required>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="recepcion" class="form-label text-black">Recepcionado: </label>
+                  <select class="form-select" id="recepcion" name="recepcion" required>
+                    <option value="" disabled selected>Seleccione lugar de recepción</option>
+                    <option value="Caupolican">Caupolican</option>
+                    <option value="Portales">Portales</option>
+                  </select>
                 </div>
               </div>
 
@@ -202,7 +215,7 @@
             <div class="col-md-6">
               <div class="mb-2">
                 <label for="diagnosticpay" class="form-label text-black">Diagnóstico: </label>
-                <input type="text" class="form-control" id="diagnosticpay" name="diagnostic_pay"
+                <input type="text" class="form-control" id="diagnosticpay" name="diagnosticpay"
                   placeholder="Ingrese costo del diagnóstico" required>
               </div>
             </div>

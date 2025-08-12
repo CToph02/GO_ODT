@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>ODT_N°_{{ orden.odtNumero }}_{{ orden.odtClientName }}</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+                font-family: 'Lato', sans-serif;
+                padding: 40px 20px;
+            }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header{
+            padding: 30px;
+            text-align: center;
+        }
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .print-button {
+                display: none;
+            }
+            body::before,
+            body::after {
+                display: none !important;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+    
+    <div class="container">
+        <button class="print-button btn btn-success" onclick="window.print()">
+            Imprimir
+        </button>
+        <div class="header navbar">
+            <div>
+                <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 100px; height: auto;">
+            </div>
+            <div>
+                <h1>Orden de trabajo</h1>
+                <p>Recepcionado por <strong>{{user.username}}</strong></p>
+            </div>
+            <div>
+                <p>Número de orden N° {{ orden.odtNumero }}</p>
+            </div>
+            
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2></h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <h1>
+                                Información del cliente
+                            </h1>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Nombre</th>
+                            <td>{{ orden.odtClientName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Teléfono</th>
+                            <td>{{ orden.odtClientPhone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ orden.odtClientEmail }}</td>
+                        </tr>
+                        <tr>
+                            <th>Dirección</th>
+                            <td>{{ orden.odtClientAddress }}</td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+
+            <div class="section">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <h1>
+                                Detalles del Equipo
+                            </h1>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Fecha de recepción</th>
+                            <td>{{ orden.odtFecha }}</td>
+                        </tr>
+                        <tr>
+                            <th>Número de Serie</th>
+                            <td>{{ orden.odtNumero }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marca</th>
+                            <td>{{ orden.odtMarca }}</td>
+                        </tr>
+                        <tr>
+                            <th>Modelo</th>
+                            <td>{{ orden.odtModelo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo de Máquina</th>
+                            <td>{{ orden.odtTipoMaquina }}</td>
+                        </tr>
+                        <tr>
+                            <th>Falla Reportada</th>
+                            <td>{{ orden.odtFalla }}</td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <h1>
+                                Información de pago
+                            </h1>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Forma de Pago</th>
+                            <th>Total diagnóstico</td>
+                        </tr>
+                        <tr>
+                            <td>{{ orden.odtPaymentForm }}</th>
+                            <td>${{ orden.odtDiagnostico }}</td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+        <div class="footer">
+            <p>El presente documento acredita el estado de ingreso del equipo al servicio técnico de nuestra empresa. La garantía de nuestro trabajo es por un periodo de 1 mes (En caso de no tener reparación, se dará un plazo de 2 días para el retiro de su equipo, de lo contrario, dará derecho a la eliminación de este).</p>
+        </div>
+        
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
