@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ordenes_trabajo.urls'
+ROOT_URLCONF = 'ordenestrabajo.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ordenes_trabajo.wsgi.application'
+WSGI_APPLICATION = 'ordenestrabajo.wsgi.application'
 
 
 # Database

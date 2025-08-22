@@ -1,5 +1,5 @@
 """
-ASGI config for ordenes_trabajo project.
+ASGI config for ordenestrabajo project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ordenes_trabajo.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ordenestrabajo.settings')
 
 application = get_asgi_application()
