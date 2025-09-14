@@ -42,7 +42,8 @@
             <div class="mb-3">
               <p class="mb-1"><strong>Cliente:</strong> {{ odt.odtClientName }}</p>
               <p class="mb-1"><strong>Teléfono:</strong> {{ odt.odtClientPhone }}</p>
-              <p class="mb-1"><strong>Dirección:</strong> {{ odt.odtClientEmail }}</p>
+              <p class="mb-1"><strong>Dirección:</strong> {{ odt.odtClientAddress }}</p>
+              <p class="mb-1"><strong>Correo:</strong> {{ odt.odtClientEmail }}</p>
               <p class="mb-1"><strong>Falla:</strong> {{ odt.odtFalla }}</p>
             </div>
             <div class="mb-3">
@@ -332,7 +333,4 @@
   </div>
 </div>
 
-{% endblock %}
-
-{% block addicional_script %}
 {% endblock %}

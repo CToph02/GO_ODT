@@ -1,11 +1,180 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>miau XD</h1>
-</body>
-</html>
+{% extends './layouts/base.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-user-plus icon"></i>
+                <h3 id="form-title">Crear Cuenta</h3>
+                <p class="text-muted">Regístrate en GO Services</p>
+            </div>
+
+            <div class="auth-body">
+                {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            {% if field == '__all__' %}
+                                {{ error }}
+                            {% else %}
+                                <strong>{{ field|title }}:</strong> {{ error }}
+                            {% endif %}
+                            {% if not forloop.last %}<br>{% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <form method="post" class="auth-form active fade-in">
+                    {% csrf_token %}
+
+                    <div class="form-floating">
+                        <input type="text" 
+                               class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                               id="id_username" 
+                               name="username"
+                               placeholder="Usuario"
+                               value="{{ form.username.value|default:'' }}"
+                               required>
+                        <label for="id_username">
+                            <i class="fa-solid fa-circle-user me-2"></i>Usuario
+                        </label>
+                        {% if form.username.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.username.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="email" 
+                               class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
+                               id="id_email" 
+                               name="email"
+                               placeholder="Correo electrónico"
+                               value="{{ form.email.value|default:'' }}"
+                               required>
+                        <label for="id_email">
+                            <i class="fas fa-envelope me-2"></i>Correo electrónico
+                        </label>
+                        {% if form.email.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.email.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" 
+                               class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
+                               id="id_password" 
+                               name="password"
+                               placeholder="Contraseña"
+                               required>
+                        <label for="id_password1">
+                            <i class="fas fa-lock me-2"></i>Contraseña
+                        </label>
+                        <div class="password-toggle">
+                            <button type="button" 
+                                    class="btn btn-link p-0" 
+                                    id="togglePassword1"
+                                    tabindex="-1">
+                                <i class="fas fa-eye" id="eyeIcon1"></i>
+                            </button>
+                        </div>
+                        {% if form.password1.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.password1.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" 
+                               class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
+                               id="id_password2" 
+                               name="password2"
+                               placeholder="Confirmar contraseña"
+                               required>
+                        <label for="id_password2">
+                            <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+                        </label>
+                        <div class="password-toggle">
+                            <button type="button" 
+                                    class="btn btn-link p-0" 
+                                    id="togglePassword2"
+                                    tabindex="-1">
+                                <i class="fas fa-eye" id="eyeIcon2"></i>
+                            </button>
+                        </div>
+                        {% if form.password2.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.password2.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mb-3">
+                        <i class="fas fa-user-plus me-2"></i>Registrarse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle para mostrar/ocultar contraseñas
+    const toggles = [
+        {btn: 'togglePassword1', input: 'id_password1', icon: 'eyeIcon1'},
+        {btn: 'togglePassword2', input: 'id_password2', icon: 'eyeIcon2'}
+    ];
+
+    toggles.forEach(t => {
+        const toggle = document.getElementById(t.btn);
+        const input = document.getElementById(t.input);
+        const icon = document.getElementById(t.icon);
+
+        if (toggle && input && icon) {
+            toggle.addEventListener('click', function() {
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+
+                if (type === 'password') {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+    });
+
+    // Auto-focus en el primer campo
+    const usernameInput = document.getElementById('id_username');
+    if (usernameInput) usernameInput.focus();
+});
+</script>
+{% endblock %}

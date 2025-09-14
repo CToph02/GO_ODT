@@ -1,42 +1,33 @@
 from django.shortcuts import render, redirect
-#from django.http import HttpResponse
 from datetime import datetime
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-#from django.contrib.auth.forms import AuthenticationForm
 from .models import OrdenTrabajo#, Cliente, EstadoOrden
 from django.db.models import Q
+from services.auth.login_service import Log_in, Log_out
+from services.auth.register_service import reg
+
+#from django.http import HttpResponse
+#from django.contrib.auth import authenticate, login, logout
+#from django.contrib.auth.forms import AuthenticationForm
 
 def index(request):
-    contexto = {
-    'year': datetime.now().year,
-    }
-    return render(request, 'index.html', contexto)
+    return render(request, 'index.html')
 
 def log_in(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-
-    print(f"Username: {username}, Password: {password}")
-    user = authenticate(username=username, password=password)
-    print(f"User authenticated: {user}")
-    if user is not None:
-        login(request, user)
-        return redirect('odts')
-    return render(request, 'login.html', {})
-
-def register(request):
-    return render(request, 'register.html', {})
+    return Log_in(request)
 
 def log_out(request):
-    logout(request)
-    return redirect('index')
+    return Log_out(request)
+
+def register(request):
+    return reg(request)
 
 @login_required
 def odts(request):
     orden = OrdenTrabajo.objects.all()
     return render(request, 'odt.html', {'orden': orden})
 
+@login_required
 def crear_odt(request):
     if request.method == 'POST':
         # Datos Cliente
@@ -55,6 +46,7 @@ def crear_odt(request):
         metodoPago = request.POST.get('odtPaymentForm')
         diagnostico = request.POST.get('diagnosticpay')
         recepcion = request.POST.get('recepcion')
+        #recepcionadoPor = request.POST.get('')
 
         print(diagnostico)
 
@@ -76,23 +68,28 @@ def crear_odt(request):
         orden.save()
     return redirect('odts')
 
+@login_required
 def detalle_odt(request, odt_id):
     orden = OrdenTrabajo.objects.get(odtId=odt_id)
     return render(request, 'odt.html', {'orden': orden})
 
+@login_required
 def editar_odt(request, odt_id):
     orden = OrdenTrabajo.objects.get(odtId=odt_id)
     return render(request, 'editar_odt.html', {'orden': orden})
 
+@login_required
 def eliminar_odt(request, odt_id):
     orden = OrdenTrabajo.objects.get(odtId=odt_id)
     orden.delete()
     return redirect('odts')
 
+@login_required
 def imprimir_odt(request, odt_id):
     orden = OrdenTrabajo.objects.get(odtId=odt_id)
     return render(request, 'imprimir.html', {'orden': orden})
 
+@login_required
 def buscar_odt(request):
     if request.method == 'POST':
         query = request.POST.get('search')
@@ -104,23 +101,19 @@ def buscar_odt(request):
         else:
             orden = OrdenTrabajo.objects.all()
     return render(request, 'odt.html', {'orden': orden})
-    # query = request.GET.get('query')
-    # if query:
-    #     ordenes = OrdenTrabajo.objects.filter(odtNumero__icontains=query)
-    # else:
-    #     ordenes = OrdenTrabajo.objects.all()
-    # return render(request, 'odt.html', {'orden': ordenes})
 
+@login_required
 def actualizar_estado_odt(request, odt_id):
     context = {
         'odt_id': odt_id,
-        'new_status': 'Completada'  # Example status update
+        'new_status': 'Completada'
     }
     return render(request, 'actualizar_estado_odt.html', context)
 
+@login_required
 def estado(request):
     context = {
         'odt_id': "odt_id",
-        'status': 'Pendiente'  # Example status
+        'status': 'Pendiente'
     }
     return render(request, 'estado.html', context)

@@ -1,4 +1,5 @@
 from django.db import models
+
 class Cliente(models.Model):
     clienteId = models.AutoField(primary_key=True)
     clienteNombre = models.CharField(max_length=100)
@@ -70,3 +71,56 @@ class Tecnicos(models.Model):
         verbose_name_plural = 'Técnicos'
         ordering = ['tecnicoNombre']
         db_table = 'tecnico'
+
+class Estado(models.Model):
+    estadoId = models.AutoField(primary_key=True)
+    estadoNombre = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.estadoNombre
+    
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
+        ordering = ['estadoNombre']
+        db_table = 'estado'
+
+class TipoMaquina(models.Model):
+    tipoId = models.AutoField(primary_key=True)
+    tipoNombre = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.tipoNombre
+    
+    class Meta:
+        verbose_name = 'Tipo de Máquina'
+        verbose_name_plural = 'Tipos de Máquina'
+        ordering = ['tipoNombre']
+        db_table = 'tipo_maquina'
+
+class Impresora(models.Model):
+    impresoraId = models.AutoField(primary_key=True)
+    impresoraNombre = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.impresoraNombre
+    
+    class Meta:
+        verbose_name = 'Impresora'
+        verbose_name_plural = 'Impresoras'
+        ordering = ['impresoraNombre']
+        db_table = 'impresora'
+
+class Modelo(models.Model):
+    modeloId = models.AutoField(primary_key=True)
+    modeloNombre = models.CharField(max_length=50)
+    impresora_id = models.ForeignKey(Impresora, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.modeloNombre
+    
+    class Meta:
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
+        ordering = ['modeloNombre']
+        db_table = 'modelo'
